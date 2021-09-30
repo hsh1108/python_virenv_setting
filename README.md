@@ -1,8 +1,6 @@
 
-# Ubuntu setting
+# Virtual Environment to develop
 
-
-# 
 ## Install
 ```
 $ apt-get install direnv
@@ -17,45 +15,28 @@ $ direnv allow
 $ source ~/bashrc file
 ```
 
-## ~/.bashrc file
+## Init setting
+1. ~/.bashrc file
 paste below to ~/.bashrc file
 ```
 eval "$(direnv hook bash)"  
 ```
 
-## .envrc 
+2. .envrc 
 paste below to .envrc file
 ```
 use python 3
 ```
 
-## ~/.direnvrc file
+3. ~/.direnvrc file
 paste below to ~/.direnvrc file
 ```
 use_python() {
   local python_root=/usr
   load_prefix "$python_root"
-  layout_python "$python_root/bin/python3"
+  layout_python "$python_root/bin/python3"  # python path to use
 }
 ```
 
 
 
-
-# virtualenv & virtualenvwrapper
-## Install
-```
-$ pip3 install virtualenv virtualenvwrapper
-```
-
-## Usage
-1. make directory to store all virtual envs
-```
-$ mkdir ~/.virtualenvs
-```
-2. add path settings(as below) to ~/.bashrc file
-```
-$ export WORKON_HOME=~/.virtualenvs
-$ export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'  # Usage of python3
-$ source ~/.local/bin/virtualenvwrapper.sh            # On ubuntu 17.04 
-```
