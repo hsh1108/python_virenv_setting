@@ -1,10 +1,11 @@
 
-# Virtual Environment to develop
+# Python Virtual Environment setting
 
 ## Install
 ```
 $ apt-get install direnv
 $ pip3 install virtualenv
+$ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ```
 ## Usage
 ```
@@ -12,29 +13,68 @@ $ mkdir [project_name]
 $ cd [project_name]
 $ touch .envrc
 $ direnv allow
-$ source ~/bashrc file
+$ source ~/.bashrc      # after modify resource file(~/.bashrc)
+$ source ~/.direnvrc    # after modify resource file(~/.direnvrc)
 ```
 
-## Init setting
-1. ~/.bashrc file
+## Resource files
+1. ~/.bashrc file  
 paste below to ~/.bashrc file
 ```
+# pyenv 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="~/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# direnv
 eval "$(direnv hook bash)"  
 ```
 
-2. .envrc 
+2. .envrc  
 paste below to .envrc file
 ```
-use python 3
+# ~/.envrc
+# -*- mode: sh; -*-
+# (rootdir)/.envrc : direnv configuration file
+# see https://direnv.net/
+# pyversion=$(head .python-version)
+# pvenv=$(head     .python-virtualenv)
+pyversion=3.8.0     # [python version]
+pvenv=exp           # [env name]
+
+use python ${pyversion}
+# Create the virtualenv if not yet done
+layout virtualenv ${pyversion} ${pvenv}
+# activate it
+layout activate ${pvenv}-${pyversion}
+
 ```
 
-3. ~/.direnvrc file
+3. ~/.direnvrc file  
 paste below to ~/.direnvrc file
 ```
+# use a certain pyenv version
 use_python() {
-  local python_root=/usr
-  load_prefix "$python_root"
-  layout_python "$python_root/bin/python3"  # python path to use
+    if [ -n "$(which pyenv)" ]; then
+        local pyversion=$1
+        pyenv local ${pyversion}
+    fi
+}
+
+layout_virtualenv() {
+    local pyversion=$1
+    local pvenv=$2
+    if [ -n "$(which pyenv virtualenv)" ]; then    
+        pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+    fi    
+    pyenv local --unset
+}
+
+layout_activate() {
+    if [ -n "$(which pyenv)" ]; then
+        source $PYENV_ROOT/versions/$1/bin/activate
+    fi
 }
 ```
 
