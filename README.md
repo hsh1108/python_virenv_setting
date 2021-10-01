@@ -55,7 +55,7 @@ use python ${pyversion}
 layout virtualenv ${pyversion} ${pvenv}
 # activate it
 layout activate ${pvenv}-${pyversion}
-
+unset PS1
 ```
 
 3. ~/.direnvrc file  
