@@ -23,12 +23,19 @@ paste below to ~/.bashrc file
 ```
 # pyenv 
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="~/.pyenv/bin:$PATH"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # direnv
 eval "$(direnv hook bash)"  
+show_virtual_env() {
+    if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then 
+        echo "($(basename $VIRTUAL_ENV))"
+    fi    
+}
+export -f show_virtual_env 
+PS1='$(show_virtual_env)'$PS1  
 ```
 
 2. .envrc  
